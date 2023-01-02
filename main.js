@@ -2,7 +2,12 @@ const form = document.querySelector('#search-form');
 const addressInput = document.querySelector('#address-input');
 const spinner = document.querySelector('#spinner');
 const error = document.querySelector('#error');
-
+const autocomplete = new google.maps.places.Autocomplete(
+    document.getElementById('address-input'),
+    {
+      types: ['(cities)'],
+    }
+  );
 spinner.classList.add('d-none');
 form.addEventListener('submit', function (event) {
     event.preventDefault();
@@ -25,6 +30,11 @@ form.addEventListener('submit', function (event) {
             });
             document.querySelector('#coordinates').innerHTML = 'Longitude: ' + location.lng() + '<br>Latitude: ' + location.lat();
             document.querySelector('#coordinates').style.display = 'block';
+        }
+        else if (status==='ZERO_RESULTS') {
+            document.getElementById('map').style.display='none';
+            error.innerHTML = 'Please Enter A Valid City !';
+            error.classList.remove('d-none');
         }
         else {
             document.getElementById('map').style.display='none';
